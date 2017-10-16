@@ -17,12 +17,15 @@ namespace ViSysMon
     {
         readonly PerformanceCounter _cpucounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         readonly PerformanceCounter _memcounteraval = new PerformanceCounter("Memory", "Available Bytes");
-        readonly ulong TotalPhysicalMemory = new ComputerInfo().TotalPhysicalMemory;
+        readonly PerformanceCounter _disk_read = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
+        readonly PerformanceCounter _disk_write = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
+        readonly ComputerInfo ComputerInfo = new ComputerInfo();
+        ulong TotalPhysicalMemory => ComputerInfo.TotalPhysicalMemory;
 
 
         public SysMonInfo GetSysStatus()
         {
-            var z = new Microsoft.VisualBasic.Devices.ComputerInfo();
+            //var z = new Microsoft.VisualBasic.Devices.ComputerInfo();
 
             SysMonInfo ret = new SysMonInfo();  // new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory
 
@@ -31,31 +34,38 @@ namespace ViSysMon
             ret.UseCpu = _cpucounter.NextValue();
             ret.TotalMemory = TotalPhysicalMemory;
             ret.AvailableMemory = _memcounteraval.NextValue();
+            ret.DiskRead = _disk_read.NextValue();
+            ret.DiskWrite = _disk_write.NextValue();
 
             #endregion
 
             #region Outlook
 
             var application = GetApplicationObject();
-
-            Outlook.MAPIFolder inBox = application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
-            Outlook.Items items = (Outlook.Items)inBox.Items;
-            items = items.Restrict("[UnRead] = true");
-            ret.Messages = new SysMonInfo.MessageInfo[items.Count];
-            //for(int i=0;i< items.Count;i++) 
-            int i = 0;
-            foreach (Outlook.MailItem eMails in items)
+            if (application != null)
             {
-                
-                ret.Messages[i]= new SysMonInfo.MessageInfo
-                {
-                    SenderName = eMails.SenderName,
-                    Subject = eMails.Subject
-                };
-                i++;
 
+                Outlook.MAPIFolder inBox = application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+                Outlook.Items items = (Outlook.Items)inBox.Items;
+                items = items.Restrict("[UnRead] = true");
+                ret.Messages = new SysMonInfo.MessageInfo[items.Count];
+                //for(int i=0;i< items.Count;i++) 
+                int i = 0;
+                foreach (Outlook.MailItem eMails in items)
+                {
+
+                    ret.Messages[i] = new SysMonInfo.MessageInfo
+                    {
+                        SenderName = eMails.SenderName,
+                        Subject = eMails.Subject
+                    };
+                    i++;
+
+                }
             }
-            
+            else
+                ret.Messages = new SysMonInfo.MessageInfo[0];
+
             #endregion
 
             return ret;
@@ -69,13 +79,19 @@ namespace ViSysMon
             // Check whether there is an Outlook process running.
             if (Process.GetProcessesByName("OUTLOOK").Any())
             {
-
-                // If so, use the GetActiveObject method to obtain the process and cast it to an Application object.
-                application = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
+                try
+                {
+                    // If so, use the GetActiveObject method to obtain the process and cast it to an Application object.
+                    application = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
+                }
+                catch(Exception)
+                {
+                    return null;
+                }
             }
             else
             {
-
+                return null;
                 // If not, create a new instance of Outlook and log on to the default profile.
                 application = new Outlook.Application();
                 Outlook.NameSpace nameSpace = application.GetNamespace("MAPI");

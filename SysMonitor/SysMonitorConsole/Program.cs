@@ -25,6 +25,10 @@ namespace SysMonitorConsole
                 Console.WriteLine("UseCpu = " + i.UseCpu.ToString("F3"));
                 Console.WriteLine("AvailableMemory = " + (i.AvailableMemory / 1024 / 1024).ToString("F1"));
                 Console.WriteLine("TotalMemory = " + (i.TotalMemory / 1024 / 1024).ToString("F1"));
+
+                Console.WriteLine("DiskRead = " + i.DiskRead*1000);
+                Console.WriteLine("DiskWrite = " + i.DiskWrite*1000);
+
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Messages : ");
                 foreach (SysMonInfo.MessageInfo m in i.Messages)

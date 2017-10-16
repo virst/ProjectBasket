@@ -11,6 +11,9 @@ namespace ViSysMon
         public float UseCpu;
         public float AvailableMemory;
         public ulong TotalMemory;
+        public float DiskRead;
+        public float DiskWrite;
+
         public MessageInfo[] Messages = null;
 
         public class MessageInfo
