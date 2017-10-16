@@ -1,0 +1,90 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using Outlook = Microsoft.Office.Interop.Outlook;
+using Microsoft.VisualBasic.Devices;
+
+// https://msdn.microsoft.com/ru-ru/library/office/ff462097.aspx
+
+namespace ViSysMon
+{
+    public class SysMonAnalyst
+    {
+        readonly PerformanceCounter _cpucounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        readonly PerformanceCounter _memcounteraval = new PerformanceCounter("Memory", "Available Bytes");
+        readonly ulong TotalPhysicalMemory = new ComputerInfo().TotalPhysicalMemory;
+
+
+        public SysMonInfo GetSysStatus()
+        {
+            var z = new Microsoft.VisualBasic.Devices.ComputerInfo();
+
+            SysMonInfo ret = new SysMonInfo();  // new Microsoft.VisualBasic.Devices.ComputerInfo().TotalPhysicalMemory
+
+            #region Counters 
+
+            ret.UseCpu = _cpucounter.NextValue();
+            ret.TotalMemory = TotalPhysicalMemory;
+            ret.AvailableMemory = _memcounteraval.NextValue();
+
+            #endregion
+
+            #region Outlook
+
+            var application = GetApplicationObject();
+
+            Outlook.MAPIFolder inBox = application.Session.GetDefaultFolder(Outlook.OlDefaultFolders.olFolderInbox);
+            Outlook.Items items = (Outlook.Items)inBox.Items;
+            items = items.Restrict("[UnRead] = true");
+            ret.Messages = new SysMonInfo.MessageInfo[items.Count];
+            //for(int i=0;i< items.Count;i++) 
+            int i = 0;
+            foreach (Outlook.MailItem eMails in items)
+            {
+                
+                ret.Messages[i]= new SysMonInfo.MessageInfo
+                {
+                    SenderName = eMails.SenderName,
+                    Subject = eMails.Subject
+                };
+                i++;
+
+            }
+            
+            #endregion
+
+            return ret;
+        }
+
+        static Outlook.Application GetApplicationObject()
+        {
+
+            Outlook.Application application = null;
+
+            // Check whether there is an Outlook process running.
+            if (Process.GetProcessesByName("OUTLOOK").Any())
+            {
+
+                // If so, use the GetActiveObject method to obtain the process and cast it to an Application object.
+                application = Marshal.GetActiveObject("Outlook.Application") as Outlook.Application;
+            }
+            else
+            {
+
+                // If not, create a new instance of Outlook and log on to the default profile.
+                application = new Outlook.Application();
+                Outlook.NameSpace nameSpace = application.GetNamespace("MAPI");
+                nameSpace.Logon("", "", Missing.Value, Missing.Value);
+                nameSpace = null;
+            }
+
+            // Return the Outlook Application object.
+            return application;
+        }
+    }
+}
