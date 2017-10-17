@@ -13,23 +13,26 @@ namespace WorkTimeManager
         {
             float t = 0;
             int m = DateTime.Now.Month;
-            Manager mn = new Manager();
-            var tmpColor = Console.ForegroundColor;
+            var mn = new Manager();
+            ConsoleColor tmpColor = Console.ForegroundColor;
           
-            Manager.Work w = new Manager.Work();
+            var w = new Manager.Work();
 
             do
             {
                 Console.Clear();
                 t = mn.SumByMonth(m);
-                Console.ForegroundColor = ConsoleColor.Green;;
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Month = {0};Total time = {1:F2}",m,t);
                 Console.ForegroundColor = tmpColor;
                 Console.WriteLine("Укажите отработку в формате T 0.00 (T - код отработки; 0.00 - затраченое время)");
-                var s = Console.ReadLine();
-                w.Type = s[0];
-                w.moment = DateTime.Today;
-                w.Time = Convert.ToSingle(s.Split(' ')[1], Manager.Work.cf);
+                string s = Console.ReadLine();
+                if (s != null)
+                {
+                    w.Type = s[0];
+                    w.moment = DateTime.Today;
+                    w.Time = Convert.ToSingle(s.Split(' ')[1], Manager.Work.cf);
+                }
                 mn.AddInFile(w);
 
 

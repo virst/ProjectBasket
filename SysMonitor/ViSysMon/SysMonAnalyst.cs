@@ -15,12 +15,11 @@ namespace ViSysMon
 {
     public class SysMonAnalyst
     {
-        readonly PerformanceCounter _cpucounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        readonly PerformanceCounter _memcounteraval = new PerformanceCounter("Memory", "Available Bytes");
-        readonly PerformanceCounter _disk_read = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
-        readonly PerformanceCounter _disk_write = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
-        readonly ComputerInfo ComputerInfo = new ComputerInfo();
-        ulong TotalPhysicalMemory => ComputerInfo.TotalPhysicalMemory;
+        private readonly PerformanceCounter _cpucounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+        private readonly PerformanceCounter _memcounteraval = new PerformanceCounter("Memory", "Available Bytes");
+        private readonly PerformanceCounter _diskRead = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
+        private readonly PerformanceCounter _diskWrite = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
+        private readonly ulong _totalPhysicalMemory = new ComputerInfo().TotalPhysicalMemory;
 
 
         public SysMonInfo GetSysStatus()
@@ -32,10 +31,10 @@ namespace ViSysMon
             #region Counters 
 
             ret.UseCpu = _cpucounter.NextValue();
-            ret.TotalMemory = TotalPhysicalMemory;
+            ret.TotalMemory = _totalPhysicalMemory;
             ret.AvailableMemory = _memcounteraval.NextValue();
-            ret.DiskRead = _disk_read.NextValue();
-            ret.DiskWrite = _disk_write.NextValue();
+            ret.DiskRead = _diskRead.NextValue();
+            ret.DiskWrite = _diskWrite.NextValue();
 
             #endregion
 
@@ -71,7 +70,7 @@ namespace ViSysMon
             return ret;
         }
 
-        static Outlook.Application GetApplicationObject()
+        private static Outlook.Application GetApplicationObject()
         {
 
             Outlook.Application application = null;
