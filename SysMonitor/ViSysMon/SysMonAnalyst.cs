@@ -17,8 +17,8 @@ namespace ViSysMon
     {
         private readonly PerformanceCounter _cpucounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
         private readonly PerformanceCounter _memcounteraval = new PerformanceCounter("Memory", "Available Bytes");
-        private readonly PerformanceCounter _diskRead = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Read", "_Total");
-        private readonly PerformanceCounter _diskWrite = new PerformanceCounter("PhysicalDisk", "Avg. Disk sec/Write", "_Total");
+        private readonly PerformanceCounter _diskRead = new PerformanceCounter("PhysicalDisk", "Disk Read Bytes/sec", "_Total");
+        private readonly PerformanceCounter _diskWrite = new PerformanceCounter("PhysicalDisk", "Disk Write Bytes/sec", "_Total");
         private readonly ulong _totalPhysicalMemory = new ComputerInfo().TotalPhysicalMemory;
 
 

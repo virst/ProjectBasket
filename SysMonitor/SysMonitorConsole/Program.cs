@@ -26,7 +26,7 @@ namespace SysMonitorConsole
                 Console.Clear();
                 Console.WriteLine(DateTime.Now.ToLongTimeString());
                 Console.Write(i);
-                Thread.Sleep(2589);
+                Thread.Sleep(500);
 
             }
 

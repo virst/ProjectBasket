@@ -14,6 +14,13 @@ namespace ViSysMon
         public float DiskRead;
         public float DiskWrite;
 
+        private const float MByte = 1024 * 1024;
+
+        public float AvailableMemoryMB => AvailableMemory/MByte;
+        public float TotalMemoryMB => TotalMemory/MByte;
+        public float DiskReadMB => DiskRead/MByte;
+        public float DiskWriteMB => DiskWriteMB/MByte;
+
         public MessageInfo[] Messages = null;
 
         public class MessageInfo
@@ -32,11 +39,11 @@ namespace ViSysMon
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("UseCpu - " + this.UseCpu.ToString("F2") + " %" );
-            sb.AppendLine("AvailableMemory - " + (this.AvailableMemory / 1024 / 1024).ToString("F1") + " Mbyte");
-            sb.AppendLine("TotalMemory - " + (this.TotalMemory / 1024 / 1024).ToString("F1") + " Mbyte");
+            sb.AppendLine("AvailableMemory - " + this.AvailableMemoryMB.ToString("F1") + " Mbyte");
+            sb.AppendLine("TotalMemory - " + this.TotalMemoryMB.ToString("F1") + " Mbyte");
 
-            sb.AppendLine("DiskRead - " + (this.DiskRead * 1024).ToString("F0") + " Mbyte/sec");
-            sb.AppendLine("DiskWrite - " + (this.DiskWrite * 1024).ToString("F0") + " Mbyte/sec");
+            sb.AppendLine("DiskRead - " + this.DiskReadMB.ToString("F1") + " Mbyte/sec");
+            sb.AppendLine("DiskWrite - " + this.DiskWrite.ToString("F1") + " Mbyte/sec");
 
             if (withMails)
             {
