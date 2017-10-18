@@ -21,8 +21,12 @@ namespace ViSysMon
         private readonly PerformanceCounter _diskWrite = new PerformanceCounter("PhysicalDisk", "Disk Write Bytes/sec", "_Total");
         private readonly ulong _totalPhysicalMemory = new ComputerInfo().TotalPhysicalMemory;
 
+        public virtual SysMonInfo GetSysStatus()
+        {
+            return GetSysStatus(true);
+        }
 
-        public SysMonInfo GetSysStatus()
+        public virtual SysMonInfo GetSysStatus(bool noMail)
         {
             //var z = new Microsoft.VisualBasic.Devices.ComputerInfo();
 
@@ -37,6 +41,12 @@ namespace ViSysMon
             ret.DiskWrite = _diskWrite.NextValue();
 
             #endregion
+
+            if (noMail)
+            {
+                ret.Messages = new SysMonInfo.MessageInfo[0];
+                return ret;
+            }
 
             #region Outlook
 
@@ -70,7 +80,7 @@ namespace ViSysMon
             return ret;
         }
 
-        private static Outlook.Application GetApplicationObject()
+        protected static Outlook.Application GetApplicationObject()
         {
 
             Outlook.Application application = null;

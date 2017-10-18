@@ -5,8 +5,51 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SysMonitorWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="33*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="137*"/>
+        </Grid.RowDefinitions>
+        <Label x:Name="lbCap" Content="ViSysMon" HorizontalAlignment="Center" Margin="50,0,24,0" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Height="30" Width="80" />
+        <Label x:Name="lbProcessor" Content="UseCpu" HorizontalAlignment="Center" Margin="60,4,34,3" VerticalAlignment="Center" FontSize="15" Grid.Row="1" Height="30" Width="60" />
+        <Label x:Name="lbAvailable" Content="AvailableMemory" HorizontalAlignment="Center" Margin="22,4,8,4" VerticalAlignment="Center" FontSize="15" Grid.Row="2" Height="30" Width="124" />
+        <Label x:Name="lbTotalPhysicalMemory" Content="TotalMemory" HorizontalAlignment="Center" Margin="42,3,14,4" VerticalAlignment="Center" FontSize="15" Grid.Row="3" Height="30" Width="98" />
+        <Label x:Name="lbRead" Content="DiskRead" HorizontalAlignment="Center" Margin="54,4,28,4" VerticalAlignment="Center" FontSize="15" Grid.Row="4" Height="30" Width="72" />
+        <Label x:Name="lbWrite" Content="DiskWrite" HorizontalAlignment="Center" Margin="54,4,26,3" VerticalAlignment="Center" FontSize="15" Grid.Row="5" Height="30" Width="74" />
+
+        <TextBox x:Name="tbProcessor" Grid.Column="1" HorizontalAlignment="Left"  Margin="5,5,0,0" Grid.Row="1" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22" IsReadOnly="True" />
+        <TextBox x:Name="tbAvailable" Grid.Column="1" HorizontalAlignment="Left"  Margin="5,5,0,0" Grid.Row="2" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22"  IsReadOnly="True"/>
+        <TextBox x:Name="tbTotalPhysicalMemory" Grid.Column="1" HorizontalAlignment="Left"  Margin="5,5,0,0" Grid.Row="3" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22"  IsReadOnly="True"/>
+        <TextBox x:Name="tbRead" Grid.Column="1" HorizontalAlignment="Left"  Margin="5,5,0,0" Grid.Row="4" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22" IsReadOnly="True" />
+        <TextBox x:Name="tbWrite" Grid.Column="1" HorizontalAlignment="Left"  Margin="5,5,0,0" Grid.Row="5" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22" IsReadOnly="True" />
+
+        <Label x:Name="label" Content="%" Grid.Column="1" HorizontalAlignment="Left" Margin="102,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="26"/>
+        <Label x:Name="label_Copy" Content="Mbyte" Grid.Column="1" HorizontalAlignment="Left" Margin="102,5,0,0" Grid.Row="2" VerticalAlignment="Top" Width="56" Height="26"/>
+        <Label x:Name="label_Copy1" Content="Mbyte" Grid.Column="1" HorizontalAlignment="Left" Margin="102,3,0,0" Grid.Row="3" VerticalAlignment="Top" Width="56" Height="26"/>
+        <Label x:Name="label_Copy2" Content="Mbyte/sec" Grid.Column="1" HorizontalAlignment="Left" Margin="102,4,0,0" Grid.Row="4" VerticalAlignment="Top" Width="78" Height="26"/>
+        <Label x:Name="label_Copy3" Content="Mbyte/sec" Grid.Column="1" HorizontalAlignment="Left" Margin="102,1,0,0" Grid.Row="5" VerticalAlignment="Top" Width="78" Height="26"/>
+        <TextBox x:Name="tbAvailable_Prc" Grid.Column="1" HorizontalAlignment="Left"  Margin="178,11,0,0" Grid.Row="2" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22"  IsReadOnly="True"/>
+        <TextBox x:Name="tbRead_Prc" Grid.Column="1" HorizontalAlignment="Left"  Margin="178,11,0,0" Grid.Row="4" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22" IsReadOnly="True" />
+        <TextBox x:Name="tbWrite_Prc" Grid.Column="1" HorizontalAlignment="Left"  Margin="178,11,0,0" Grid.Row="5" TextWrapping="NoWrap" Text="0" VerticalAlignment="Top" Width="92" Height="22" IsReadOnly="True" />
+        <Label x:Name="label_Copy5" Content="%" Grid.Column="1" HorizontalAlignment="Left" Margin="275,11,0,0" Grid.Row="2" VerticalAlignment="Top" Width="56" Height="26"/>
+        <Label x:Name="label_Copy7" Content="%" Grid.Column="1" HorizontalAlignment="Left" Margin="275,10,0,0" Grid.Row="4" VerticalAlignment="Top" Width="78" Height="26"/>
+        <Label x:Name="label_Copy8" Content="%" Grid.Column="1" HorizontalAlignment="Left" Margin="275,7,0,0" Grid.Row="5" VerticalAlignment="Top" Width="78" Height="26"/>
+
+        <Rectangle x:Name="Rectangle1" Grid.Column="1" Fill="#FF0000" HorizontalAlignment="Left" Height="30" Margin="33,54,0,0" Grid.Row="6" Stroke="Black" VerticalAlignment="Top" Width="62"/>
+        <Rectangle x:Name="Rectangle2" Grid.Column="1" Fill="#FF0000" HorizontalAlignment="Left" Height="30" Margin="109,54,0,0" Grid.Row="6" Stroke="Black" VerticalAlignment="Top" Width="62"/>
+        <Rectangle x:Name="Rectangle3" Grid.Column="1" Fill="#FF0000" HorizontalAlignment="Left" Height="30" Margin="191,54,0,0" Grid.Row="6" Stroke="Black" VerticalAlignment="Top" Width="62"/>
+        <Rectangle x:Name="Rectangle4" Grid.Column="1" Fill="#FF0000" HorizontalAlignment="Left" Height="30" Margin="269,54,0,0" Grid.Row="6" Stroke="Black" VerticalAlignment="Top" Width="62"/>
+
+
     </Grid>
 </Window>

@@ -14,12 +14,12 @@ namespace ViSysMon
         public float DiskRead;
         public float DiskWrite;
 
-        private const float MByte = 1024 * 1024;
+        internal const float MByte = 1024 * 1024;
 
         public float AvailableMemoryMB => AvailableMemory/MByte;
         public float TotalMemoryMB => TotalMemory/MByte;
         public float DiskReadMB => DiskRead/MByte;
-        public float DiskWriteMB => DiskWriteMB/MByte;
+        public float DiskWriteMB => DiskWrite/MByte;
 
         public MessageInfo[] Messages = null;
 
@@ -43,7 +43,7 @@ namespace ViSysMon
             sb.AppendLine("TotalMemory - " + this.TotalMemoryMB.ToString("F1") + " Mbyte");
 
             sb.AppendLine("DiskRead - " + this.DiskReadMB.ToString("F1") + " Mbyte/sec");
-            sb.AppendLine("DiskWrite - " + this.DiskWrite.ToString("F1") + " Mbyte/sec");
+            sb.AppendLine("DiskWrite - " + this.DiskWriteMB.ToString("F1") + " Mbyte/sec");
 
             if (withMails)
             {
