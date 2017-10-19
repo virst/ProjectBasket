@@ -14,7 +14,7 @@ namespace ViSysMon
         public float DiskRead;
         public float DiskWrite;
 
-        internal const float MByte = 1024 * 1024;
+        public const float MByte = 1024 * 1024;
 
         public float AvailableMemoryMB => AvailableMemory/MByte;
         public float TotalMemoryMB => TotalMemory/MByte;

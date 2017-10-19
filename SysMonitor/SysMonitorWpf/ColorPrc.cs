@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
+using System.Windows.Media;
+using Color = System.Drawing.Color;
 
 
 namespace SysMonitorWpf
@@ -17,6 +18,8 @@ namespace SysMonitorWpf
 
         private void cint(int prc)
         {
+            if (prc > 100) prc = 100;
+
             float fp = mapF(prc, 0, 100, 0, c.Length - 1);
 
             a = (int)Math.Truncate(fp);
@@ -35,14 +38,14 @@ namespace SysMonitorWpf
             p2 = map(b, 0, c.Length - 1, 0, 100);
         }
 
-        public Color getColorPrc(int p)
+        public System.Windows.Media.Color getColorPrc(int p)
         {
             cint(p);
-            int nr = map(p, p1, p2, c[a].R, c[b].R);
-            int ng = map(p, p1, p2, c[a].G, c[b].G);
-            int nb = map(p, p1, p2, c[a].B, c[b].B);
-
-            return Color.FromArgb(nr, ng, nb);
+            byte nr = (byte)map(p, p1, p2, c[a].R, c[b].R);
+            byte ng = (byte)map(p, p1, p2, c[a].G, c[b].G);
+            byte nb = (byte)map(p, p1, p2, c[a].B, c[b].B);
+            
+            return System.Windows.Media.Color.FromArgb(255,nr, ng, nb);
         }
 
         private static int map(int x, int in_min, int in_max, int out_min, int out_max)

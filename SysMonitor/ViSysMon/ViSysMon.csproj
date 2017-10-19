@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="SysMonAnalyst.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SysMonAnalystPrc.cs" />
     <Compile Include="SysMonInfo.cs" />
   </ItemGroup>
   <ItemGroup>

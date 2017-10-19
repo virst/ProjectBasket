@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ViSysMon;
+using ViSysMonWpf;
 
 namespace SysMonitorWpf
 {
@@ -32,6 +33,7 @@ namespace SysMonitorWpf
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             sa = new SysMonAnalystPrc();
+            ii = new SysMonInfoPrc(null, sa);
 
             UpdateInfo();
             var dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
@@ -44,6 +46,9 @@ namespace SysMonitorWpf
         {
             UpdateInfo();
         }
+
+        ColorPrc p = new ColorPrc();
+        private SysMonInfoPrc ii;
 
         void UpdateInfo()
         {
@@ -62,6 +67,17 @@ namespace SysMonitorWpf
             tbTotalPhysicalMemory.Text = i.TotalMemoryMB.ToString("F1");
             tbRead.Text = i.DiskReadMB.ToString("F1");
             tbWrite.Text = i.DiskWriteMB.ToString("F1");
+            
+            ii.I = i;
+
+            Rectangle1.Fill = new SolidColorBrush(p.getColorPrc((int)ii.UseCpuPrc));
+            Rectangle2.Fill = new SolidColorBrush(p.getColorPrc((int)ii.UseMemoryPrc));
+            Rectangle3.Fill = new SolidColorBrush(p.getColorPrc((int)ii.DiskReadPrc));
+            Rectangle4.Fill = new SolidColorBrush(p.getColorPrc((int)ii.DiskWritePrc));
+
+            tbAvailable_Prc.Text = ii.UseMemoryPrc.ToString("F2");
+            tbRead_Prc.Text = ii.DiskReadPrc.ToString("F2");
+            tbWrite_Prc.Text = ii.DiskWritePrc.ToString("F2");
 
         }
 

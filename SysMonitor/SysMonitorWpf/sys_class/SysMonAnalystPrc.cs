@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ViSysMon;
 
-namespace ViSysMon
+namespace ViSysMonWpf
 {
     public class SysMonAnalystPrc : SysMonAnalyst
     {
-        public float Max_Read { private set; get; }
-        public float Max_Write { private set; get; }
+        public float Max_Read { private set; get; } = 1f;
+        public float Max_Write { private set; get; } = 1f;
 
         public float Max_ReadMB => Max_Read / SysMonInfo.MByte;
         public float Max_WriteMB => Max_Write / SysMonInfo.MByte;
